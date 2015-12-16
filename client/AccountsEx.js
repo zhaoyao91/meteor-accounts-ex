@@ -297,6 +297,30 @@ _.extend(AccountsEx, {
     }
 });
 
+// about external service
+
+_.extend(AccountsEx, {
+    loginWithService() {
+
+    },
+
+    linkService() {
+
+    },
+
+    unlinkService() {
+
+    },
+
+    _linkService() {
+
+    },
+
+    _unlinkService() {
+
+    }
+});
+
 function defaultCallback(err) {
     if (err) {
         console.error(err);
