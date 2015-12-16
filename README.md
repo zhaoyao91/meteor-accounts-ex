@@ -2,6 +2,9 @@
 
 New accounts layer to support uniform styles of email, phone and external services.
 
+!!! This package is under active construction and has not been published to atmosphere yet. Hope to receive any help
+from you, thanks.
+
 ## features
 
 common:
@@ -10,7 +13,7 @@ common:
 
 client:
 
-- uniform styles of email, phone, external services
+- uniform styles for email, phone, external services
 - support sendVerifyCode, createUser, login/logout, link/unlink 
 
 server:
@@ -51,6 +54,39 @@ There are some **types** of verify code, you can send them via different **ways*
 Up to you. By defining your actions, you can control the verify code options(format, ttl) and how to send the them by 
 different actions.
 
+### sender
+
+This package doesn't define how to send verify code, but only relies on a sender interface. Thus you can customize it as
+you like, whether by smtp or some server's web api or something else.
+
+The default stub sender is:
+
+    // vars is {code, ttl}
+    sender: {
+        sendEmail(email, action, vars) {
+            console.log('AccountsEx send email', {email, action, vars})
+        },
+
+        sendSMS(phone, action, vars) {
+            console.log('AccountsEx send SMS', {phone, action, vars})
+        }
+    },
+
+You can call `AccountsEx.setSender(sender)` on server to replace it.
+
+### verify code options
+
+You can define verify code options by actions. Call `AccountsEx.setVerifyCodeOptions(builder)` and pass in a builder. The
+default builder is: 
+
+    function (type, action) {
+        return {
+            ttl: 10 * 60 * 1000,
+            length: 6,
+            alphabet: '1234567890'
+        }
+    }
+
 ### strategies
 
 Some actions can be controlled by customizing the corresponding strategies. These actions are: 
@@ -72,10 +108,14 @@ You can use `AccountsEx.getStrategies()` on server to get all strategies and add
 There are pre-defined default strategies. You can check the code to see if they are ok for your needs and learn how to use
 strategies.
 
-### methods and publications
+### rate limit
 
-todo
-used to set rate limit
+You can set rate limit for methods and publications by using DDPRateLimiter. All method and publication names used by
+this package has a prefix, you can get them from `AccountsEx.methodPrefix` and `AccountsEx.publicationPrefix`.
+
+Besides the prefix, all the method and publication names are: 
+
+- todo
 
 ## todo
 
